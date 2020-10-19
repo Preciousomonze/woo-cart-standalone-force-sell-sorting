@@ -2,7 +2,7 @@
 This MU-Plugin helps sort Predefined Products to behave a certain way when they're added or removed from the cart page. Requires WooCommerce to Work.
 
 ## How to install
-It's an MU-plugin, so add it to your `site-directory/wp-content/mu-plugins`. And you're good to go.
+It's an MU-plugin, so add it to your `site-directory/wp-content/mu-plugins`. Replace the static variable values for your use-case, and you're good to go.
 
 ## This is also for the Hacktoberfest Drill, so feel free to contribute 💪🏼🥞
 I also made my Phone Validator Plugin hacktoberfest-ready, but a lot of complications for now, so no time to sort it for easier contribution.
