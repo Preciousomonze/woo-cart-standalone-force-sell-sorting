@@ -38,6 +38,7 @@ class Pekky_WC_Stand_Alone_Force_Sells_Sorting {
 	 *
 	 * @var array
 	 */
+
 	protected static $wc_other_products = array( 28745, 28746, 28747, 28748 );
 
 	/**
@@ -66,32 +67,28 @@ class Pekky_WC_Stand_Alone_Force_Sells_Sorting {
 	/**
 	 * Suggested upsell products to show based on cart amount
 	 * All prices are assumed in $dollars.
-	 * patterns [ ['level' => {level number}, 'min_price' => {price}, 'product_id' => {id}, 'upsell_note' => {text} ,
-	 *  'cart_btn_txt' => {add to cart button text} ] ]
+	 * patterns [ ['level' => {level number}, 'min_price' => {price}, 'product_id' => {id}, 'upsell_note' => {text} ] ]
 	 *
 	 * @var array
 	 */
 	protected static $wc_suggested_upsell_products_data = array(
 		array(
-			'level'        => 2,
-			'min_price'    => 7,
-			'product_id'   => 28745,
-			'upsell_note'  => 'Upgrade to level 2',
-			'cart_btn_txt' => '',
+			'level'       => 2,
+			'min_price'   => 7,
+			'product_id'  => 28745,
+			'upsell_note' => 'Massive Value! Get Your Diabetes Under Better Control By Learning About Healthy Nutrition with Diabetes - Upgrade Today',
 		),
 		array(
-			'level'        => 3,
-			'min_price'    => 196,
-			'product_id'   => 29237,
-			'upsell_note'  => 'Upgrade to level 3',
-			'cart_btn_txt' => '',
+			'level'       => 3,
+			'min_price'   => 197,
+			'product_id'  => 29237,
+			'upsell_note' => 'Get The Full Benefits Of Diabetes Education By Upgrading To The Diabetes Education Program for $297 + $14.99/month! (Great Value!)',
 		),
 		array(
-			'level'        => 4,
-			'min_price'    => 296,
-			'product_id'   => 25221,
-			'upsell_note'  => 'Add module 4',
-			'cart_btn_txt' => '',
+			'level'       => 4,
+			'min_price'   => 297,
+			'product_id'  => 25221,
+			'upsell_note' => 'Join The ELITE 3% Group By Upgrading To The 3% Diabetes Program Today for $397 + $19.99/month. (Best Value!)',
 		),
 	);
 
