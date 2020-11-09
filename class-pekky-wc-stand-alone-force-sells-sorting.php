@@ -11,7 +11,7 @@
  * Description: This MU-Plugin helps sort Predefined Products to behave a certain way when they're added or removed from the cart page. Requires WooCommerce to work.
  * Author: Precious Omonzejele (CodeXplorer 🤾🏽‍♂️🥞🦜🤡)
  * Author URI: https://codexplorer.ninja
- * Version: 1.0.0
+ * Version: 2.1.0
  * Requires at least: 5.0
  * Tested up to: 5.4
  * WC requires at least: 4.0
@@ -99,7 +99,9 @@ class Pekky_WC_Stand_Alone_Force_Sells_Sorting {
      *
      * All prices are assumed in $dollars.
      * patterns [ ['coupon_code' => {coupon code}, 'product_id' => {product_id_to_upsell}, 'upsell_note' => {text},
-     * 'cart_btn_txt' => {add to cart button text} ] ]
+     * 'cart_btn_txt' => {add to cart button text}, 'next_upsell' => [ 'coupon_code => {code}, 'product_id' => {id} ] ] ]
+     * next_upsell data is useful if you want to upsell another product and coupon code, leave blank if you want to
+     * bounce back to upselling the normal product_id.
      *
      * @var array
      */
@@ -108,6 +110,10 @@ class Pekky_WC_Stand_Alone_Force_Sells_Sorting {
             'coupon_code' => 'free-gift',
             'product_id'  => 226,
             'upsell_note' => 'yaees - Upgrade Today',
+            'next_upsell' => array(
+                'coupon_code' => '',
+                'product_id'  => 0,
+            ),
         ),
     );
 
@@ -323,15 +329,8 @@ class Pekky_WC_Stand_Alone_Force_Sells_Sorting {
             if ( ! $product ) {
                 return false;
             }
-            // Default link text if the upsell 'cart_btn_txt' is empty.
-            $default_link_txt = 'Click Here to Upgrade';
-
-            $link_text = ( isset( $upsell_data['cart_btn_txt'] ) && ! empty( $upsell_data['cart_btn_txt'] )
-            ? $upsell_data['cart_btn_txt'] : $default_link_txt );
-
             // Get link.
-            $raw_link = add_query_arg( 'add-to-cart', $p_id );
-            $link     = '<a href="' . esc_url( $raw_link ) . '" class="button">' . $link_text . '</a>';
+            $link = self::pekky_get_upsell_content_link( $upsell_data );
 
             // Translators: 1: The upsell note. 2:add to cart link.
             $message = sprintf( __( '%1$s %2$s', 'woocommerce' ), $upsell_data['upsell_note'], $link );
@@ -341,6 +340,43 @@ class Pekky_WC_Stand_Alone_Force_Sells_Sorting {
         }
 
         return false;
+    }
+
+    /**
+     * Sort content to upsell.
+     *
+     * @param array $upsell_data The upsell data.
+     * @return string The prepared link.
+     */
+    private static function pekky_get_upsell_content_link( $upsell_data ) {
+        // Default link text if the upsell 'cart_btn_txt' is empty.
+        $default_link_txt = 'Click Here to Upgrade';
+
+        $link_text = ( isset( $upsell_data['cart_btn_txt'] ) && ! empty( $upsell_data['cart_btn_txt'] )
+        ? $upsell_data['cart_btn_txt'] : $default_link_txt );
+
+        $query_args = array( 'add-to-cart' => $upsell_data['product_id'] );
+
+        $next_upsell = isset( $upsell_data['next_upsell'] ) ? $upsell_data['next_upsell'] : '';
+
+        // Check if there's any useful data.
+        if ( ! empty( $next_upsell ) && ( ! empty( $next_upsell['coupon_code'] ) || 0 < $next_upsell['product_id'] ) ) {
+            $product = wc_get_product( $next_upsell['product_id'] );
+
+            // Does product exist? to play safe and not break the site.
+            if ( ! $product ) {
+                unset( $query_args['add-to-cart'] );
+            } else {
+                $query_args['add-to-cart'] = $next_upsell['product_id'];
+            }
+
+            $query_args['apply_coupon'] = $next_upsell['coupon_code'];
+        }
+
+        // Get link.
+        $raw_link = add_query_arg( $query_args );
+        $link     = '<a href="' . esc_url( $raw_link ) . '" class="button">' . $link_text . '</a>';
+        return $link;
     }
 
     /**
