@@ -108,7 +108,7 @@ class Pekky_WC_Stand_Alone_Force_Sells_Sorting {
     protected static $wc_suggested_upsell_coupon_data = array(
         array(
             'coupon_code' => 'free-gift',
-            'product_id'  => 226,
+            'product_id'  => 0,
             'upsell_note' => 'yaees - Upgrade Today',
             'next_upsell' => array(
                 'coupon_code' => '',
